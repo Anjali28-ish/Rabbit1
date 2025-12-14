@@ -1,7 +1,10 @@
 const express = require("express");
 const cors = require("cors");
-const dotenv =  require("dotenv");
+const dotenv = require("dotenv");
 const connectDB = require("./config/db");
+
+dotenv.config();
+
 const userRoutes = require("./routes/userRoutes");
 const productRoutes = require("./routes/productsRoutes");
 const cartRoutes = require("./routes/cartRoutes");
@@ -12,23 +15,30 @@ const subscribeRoute = require("./routes/subscribeRoute");
 const adminRoutes = require("./routes/adminRoutes");
 const productAdminRoutes = require("./routes/productAdminRoutes");
 const adminOrderRoutes = require("./routes/adminOrderRoutes");
+
 const app = express();
+
 app.use(express.json());
-app.use(cors());
 
-dotenv.config();  
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://rabbit1-5soy.vercel.app"
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true
+  })
+);
 
-
-const PORT = process.env.PORT || 3000;
-
-// Connect to MongoDB
+// Connect DB
 connectDB();
 
 app.get("/", (req, res) => {
   res.send("WELCOME TO RABBIT API!");
 });
 
-// API Routes
+// Routes
 app.use("/api/users", userRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/cart", cartRoutes);
@@ -42,6 +52,7 @@ app.use("/api/admin/users", adminRoutes);
 app.use("/api/admin/products", productAdminRoutes);
 app.use("/api/admin/orders", adminOrderRoutes);
 
+const PORT = process.env.PORT || 9000;
 app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
