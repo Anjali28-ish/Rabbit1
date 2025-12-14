@@ -1,41 +1,47 @@
-const dotenv = require("dotenv");
-dotenv.config();
-
 const express = require("express");
 const cors = require("cors");
+const dotenv =  require("dotenv");
 const connectDB = require("./config/db");
-
+const userRoutes = require("./routes/userRoutes");
+const productRoutes = require("./routes/productsRoutes");
+const cartRoutes = require("./routes/cartRoutes");
+const checkoutRoutes = require("./routes/checkoutRoutes");
+const orderRoutes = require("./routes/orderRoutes");
+const uploadRoutes = require("./routes/uploadRoutes");
+const subscribeRoute = require("./routes/subscribeRoute");
+const adminRoutes = require("./routes/adminRoutes");
+const productAdminRoutes = require("./routes/productAdminRoutes");
+const adminOrderRoutes = require("./routes/adminOrderRoutes");
 const app = express();
-
 app.use(express.json());
+app.use(cors());
 
-app.use(
-  cors({
-    origin: [
-      "http://localhost:5173",
-      "https://rabbit1-5soy.vercel.app"
-    ]
-  })
-);
+dotenv.config();  
 
-// DB
+
+const PORT = process.env.PORT || 9000;
+
+// Connect to MongoDB
 connectDB();
 
 app.get("/", (req, res) => {
   res.send("WELCOME TO RABBIT API!");
 });
 
-// Routes
-app.use("/api/users", require("./routes/userRoutes"));
-app.use("/api/products", require("./routes/productsRoutes"));
-app.use("/api/cart", require("./routes/cartRoutes"));
-app.use("/api/checkout", require("./routes/checkoutRoutes"));
-app.use("/api/orders", require("./routes/orderRoutes"));
-app.use("/api/upload", require("./routes/uploadRoutes"));
-app.use("/api/", require("./routes/subscribeRoute"));
+// API Routes
+app.use("/api/users", userRoutes);
+app.use("/api/products", productRoutes);
+app.use("/api/cart", cartRoutes);
+app.use("/api/checkout", checkoutRoutes);
+app.use("/api/orders", orderRoutes);
+app.use("/api/upload", uploadRoutes);
+app.use("/api/", subscribeRoute);
 
-app.use("/api/admin/users", require("./routes/adminRoutes"));
-app.use("/api/admin/products", require("./routes/productAdminRoutes"));
-app.use("/api/admin/orders", require("./routes/adminOrderRoutes"));
+// Admin
+app.use("/api/admin/users", adminRoutes);
+app.use("/api/admin/products", productAdminRoutes);
+app.use("/api/admin/orders", adminOrderRoutes);
 
-module.exports = app; // 🔥 THIS IS THE KEY
+app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
+});
