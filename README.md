@@ -1,6 +1,6 @@
-# 🐰 RABBIT — MERN E-Commerce App
+# 🐰 RABBIT — MERN E-Commerce Website
 
-A *full-stack e-commerce application* built with the *MERN stack* showcasing real-world features like authentication, payments, admin management, and scalable state handling.
+A *full-stack e-commerce website* built with the *MERN stack* showcasing real-world features like authentication, payments, admin management, and scalable state handling.
 
 ---
 
@@ -19,8 +19,6 @@ A *full-stack e-commerce application* built with the *MERN stack* showcasing rea
 * *Frontend:* React, Redux Toolkit, Tailwind CSS
 * *Backend:* Node.js, Express, MongoDB
 * *Other:* JWT, Cloudinary, PayPal
-
----
 
 ---
 
