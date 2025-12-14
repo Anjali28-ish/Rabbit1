@@ -1,20 +1,9 @@
-const express = require("express");
-const cors = require("cors");
 const dotenv = require("dotenv");
-const connectDB = require("./config/db");
-
 dotenv.config();
 
-const userRoutes = require("./routes/userRoutes");
-const productRoutes = require("./routes/productsRoutes");
-const cartRoutes = require("./routes/cartRoutes");
-const checkoutRoutes = require("./routes/checkoutRoutes");
-const orderRoutes = require("./routes/orderRoutes");
-const uploadRoutes = require("./routes/uploadRoutes");
-const subscribeRoute = require("./routes/subscribeRoute");
-const adminRoutes = require("./routes/adminRoutes");
-const productAdminRoutes = require("./routes/productAdminRoutes");
-const adminOrderRoutes = require("./routes/adminOrderRoutes");
+const express = require("express");
+const cors = require("cors");
+const connectDB = require("./config/db");
 
 const app = express();
 
@@ -25,13 +14,11 @@ app.use(
     origin: [
       "http://localhost:5173",
       "https://rabbit1-5soy.vercel.app"
-    ],
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true
+    ]
   })
 );
 
-// Connect DB
+// DB
 connectDB();
 
 app.get("/", (req, res) => {
@@ -39,20 +26,16 @@ app.get("/", (req, res) => {
 });
 
 // Routes
-app.use("/api/users", userRoutes);
-app.use("/api/products", productRoutes);
-app.use("/api/cart", cartRoutes);
-app.use("/api/checkout", checkoutRoutes);
-app.use("/api/orders", orderRoutes);
-app.use("/api/upload", uploadRoutes);
-app.use("/api/", subscribeRoute);
+app.use("/api/users", require("./routes/userRoutes"));
+app.use("/api/products", require("./routes/productsRoutes"));
+app.use("/api/cart", require("./routes/cartRoutes"));
+app.use("/api/checkout", require("./routes/checkoutRoutes"));
+app.use("/api/orders", require("./routes/orderRoutes"));
+app.use("/api/upload", require("./routes/uploadRoutes"));
+app.use("/api/", require("./routes/subscribeRoute"));
 
-// Admin
-app.use("/api/admin/users", adminRoutes);
-app.use("/api/admin/products", productAdminRoutes);
-app.use("/api/admin/orders", adminOrderRoutes);
+app.use("/api/admin/users", require("./routes/adminRoutes"));
+app.use("/api/admin/products", require("./routes/productAdminRoutes"));
+app.use("/api/admin/orders", require("./routes/adminOrderRoutes"));
 
-const PORT = process.env.PORT || 9000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+module.exports = app; // 🔥 THIS IS THE KEY
